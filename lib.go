@@ -1,4 +1,4 @@
-package bchain
+package golang_blockchain
 
 import (
 	sha "crypto/sha256"

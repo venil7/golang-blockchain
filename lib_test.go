@@ -1,9 +1,9 @@
-package bchain_test
+package golang_blockchain_test
 
 import (
 	"testing"
 
-	"github.com/venil7/bchain"
+	bchain "github.com/venil7/golang-blockchain"
 )
 
 func TestBlock1(t *testing.T) {
