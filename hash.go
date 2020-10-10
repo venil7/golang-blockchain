@@ -2,24 +2,29 @@ package golang_blockchain
 
 import sha "crypto/sha256"
 
-func hash(block *Block, difficulty byte, nonce Nonce) Hash {
+func bytes(block *Block, difficulty byte, nonce Nonce) []byte {
 	parentsum := Hash{}
-	if block.parent != nil {
-		parentsum = block.parent.sum
+	if block.Parent != nil {
+		parentsum = block.Parent.Sum
 	}
-	difflen := 1
+	difficultylen := 1
 	parentsumlen := len(parentsum)
 	noncelen := len(nonce)
-	datalen := len((block.data))
-	data := make([]byte, difflen+parentsumlen+noncelen+datalen)
-	numbytes1 := copy(data, []byte{difficulty})
-	numbytes2 := copy(data[numbytes1:], parentsum[:])
-	numbytes3 := copy(data[numbytes1+numbytes2:], nonce)
-	numbytes4 := copy(data[numbytes1+numbytes2+numbytes3:], block.data)
-	if numbytes1+numbytes2+numbytes3+numbytes4 != len(data) {
+	datalen := len((block.Data))
+	bytes := make([]byte, difficultylen+parentsumlen+noncelen+datalen)
+	numbytes1 := copy(bytes, []byte{difficulty})
+	numbytes2 := copy(bytes[numbytes1:], parentsum[:])
+	numbytes3 := copy(bytes[numbytes1+numbytes2:], nonce)
+	numbytes4 := copy(bytes[numbytes1+numbytes2+numbytes3:], block.Data)
+	if numbytes1+numbytes2+numbytes3+numbytes4 != len(bytes) {
 		panic("lengths dont match")
 	}
-	return sha.Sum256(data)
+	return bytes
+}
+
+func hash(block *Block, difficulty byte, nonce Nonce) Hash {
+	bytes := bytes(block, difficulty, nonce)
+	return sha.Sum256(bytes)
 }
 
 func (hash *Hash) MatchesDifficulty(difficulty byte) bool {

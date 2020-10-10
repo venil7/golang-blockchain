@@ -1,6 +1,7 @@
 package golang_blockchain_test
 
 import (
+	"fmt"
 	"testing"
 
 	bchain "github.com/venil7/golang-blockchain"
@@ -17,4 +18,14 @@ func TestHash2(t *testing.T) {
 	if hash.MatchesDifficulty(3) {
 		t.Fail()
 	}
+}
+
+func TestHash3(t *testing.T) {
+	data := []byte("aaa")
+	block1 := bchain.Genesis(&data)
+	block2 := block1.Append(&data, 3)
+	fmt.Print(block2.VerifyIntegrity())
+	// if hash.MatchesDifficulty(3) {
+	// 	t.Fail()
+	// }
 }
